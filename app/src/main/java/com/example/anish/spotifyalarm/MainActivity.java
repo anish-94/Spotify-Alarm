@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.provider.AlarmClock;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,10 +24,10 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button AlarmButton;
-    EditText setHour, setMinute;
-    int min, hour, day;
-    Calendar cal;
+    private Button AlarmButton;
+    private EditText setHour, setMinute;
+    private int min, hour, day;
+    private Calendar cal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        toolbar.setTitleTextColor(000000);
+        toolbar.setTitleTextColor(Color.BLACK);
         AlarmButton = (Button) findViewById(R.id.alarm_button);
         setHour = (EditText) findViewById(R.id.set_hour_box);
         setMinute = (EditText) findViewById(R.id.set_min_box);
