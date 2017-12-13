@@ -5,4 +5,9 @@ package com.example.anish.spotifyalarm;
  */
 
 public class AlarmActivity {
+
+    public void setAlarm(int hour, int minute) {
+
+    }
+
 }

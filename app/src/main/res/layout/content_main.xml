@@ -9,36 +9,41 @@
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="587dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="4dp"
         android:orientation="vertical"
         android:padding="8sp"
-        android:background="#686868">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="8dp">
 
-    <EditText
-        android:id="@+id/set_hour_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="#fff"
-        android:hint="Insert hour.."
-        android:textColorHint="#fff"/>
+        <EditText
+            android:id="@+id/set_time_box"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="Time.."
+            android:textColor="#fff"
+            android:textColorHint="#fff"
+            android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/set_min_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="#fff"
-        android:hint="Insert minute.."
-        android:textColorHint="#fff"/>
+        <Button
+            android:id="@+id/time_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick Time" />
 
-    <Button
-        android:id="@+id/alarm_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set Alarm"
-        android:textSize="20sp"/>
+        <Button
+            android:id="@+id/alarm_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Set Alarm"
+            android:textSize="20sp" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
