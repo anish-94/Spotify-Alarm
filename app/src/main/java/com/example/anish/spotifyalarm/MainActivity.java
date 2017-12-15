@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Intent intent;
     PendingIntent pendingIntent;
+    private AlarmReceiver alarm;
+
+    MainActivity curInst;
 
     public String cur, selTime;
 
@@ -68,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClick(View v) {
+        final Calendar c = Calendar.getInstance();
         if(v == TimePicker) {
-            final Calendar c = Calendar.getInstance();
+//            final Calendar c = Calendar.getInstance();
             iHour = c.get(Calendar.HOUR_OF_DAY);
             iMin = c.get(Calendar.MINUTE);
 
@@ -96,19 +100,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v == AlarmButton) {
             selTime = setTime.getText().toString();
             Log.d(TAG, "Hello, we made an alarm for " + selTime);
-            setAlarm(mHour, mMin);
+            setAlarm(mHour, mMin, c);
         }
     }
 
-    private void setAlarm(int hour, int min) {
+    private void setAlarm(int hour, int min, Calendar cal) {
         Log.d(TAG, "Hello, we made it for " + hour + min);
-
         cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, 3);
         cal.setTimeInMillis(System.currentTimeMillis());
-        cal.add(Calendar.HOUR_OF_DAY, hour);
-        cal.add(Calendar.MINUTE, min);
+
+        cal.set(Calendar.HOUR_OF_DAY, hour);
+        cal.set(Calendar.MINUTE, min);
+
+//        cal.add(Calendar.HOUR_OF_DAY, hour);
+//        cal.add(Calendar.MINUTE, min);
         intent = new Intent(this,  AlarmReceiver.class);
+        intent.putExtra("extra", "yes");
         pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
         Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
@@ -150,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
- //       MainActivity.this = this;
+        curInst = this;
     }
 
     @Override
