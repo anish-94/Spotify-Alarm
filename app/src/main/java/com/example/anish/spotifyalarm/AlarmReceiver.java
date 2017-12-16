@@ -18,16 +18,12 @@ import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-//    private final String mPackage = "com.example.anish.spotifyalarm";
-//    private final String mClass = "RingtonePlayer";
-
     @Override
     public void onReceive(final Context context, Intent intent) {
 
         String state = intent.getExtras().getString("extra");
         Intent serviceIntent = new Intent(context, RingtonePlayer.class);
         serviceIntent.putExtra("extra", state);
-//        serviceIntent.setComponent(new ComponentName(mPackage, mPackage+mClass));
         context.startService(serviceIntent);
         Log.e("MyActivity", "In the receiver with " + state);
     }
