@@ -57,6 +57,9 @@ public class RingtonePlayer extends Service {
         if(state.equals("yes")) {
             startId = 1;
         }
+        else if(state.equals("no")) {
+            startId = 0;
+        }
         else {
             startId = 0;
         }
@@ -70,7 +73,14 @@ public class RingtonePlayer extends Service {
 //            mNM.notify(0, mNotify);
         }
 
-        else if (!this.isRunning && startId == 0){
+        else {
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
+            startId = 0;
+            isRunning = false;
+        }
+
+/*        else if (!this.isRunning && startId == 0){
             Log.e("if there was not sound ", " and you want end");
 
             this.isRunning = false;
@@ -94,7 +104,7 @@ public class RingtonePlayer extends Service {
             this.isRunning = false;
             this.startId = 0;
         }
-
+*/
         return START_NOT_STICKY;
 
     }

@@ -38,7 +38,7 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button AlarmButton, TimePicker;
+    private Button AlarmButton, TimePicker, CancelButton;
     private EditText setTime;
     private int iHour, iMin, mHour, mMin;
     private Calendar cal;
@@ -66,12 +66,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setTitleTextColor(Color.BLACK);
         AlarmButton = (Button) findViewById(R.id.alarm_button);
         TimePicker = (Button) findViewById(R.id.time_button);
+        CancelButton = (Button) findViewById(R.id.cancel_button);
         setTime = (EditText) findViewById(R.id.set_time_box);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         TimePicker.setOnClickListener(this);
         AlarmButton.setOnClickListener(this);
+        CancelButton.setOnClickListener(this);
 
     }
 
@@ -102,19 +104,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "Hello, we trying for " + cur);
         }
 
+        final Intent intent = new Intent(this.context, AlarmReceiver.class);
+
         if(v == AlarmButton) {
             selTime = setTime.getText().toString();
             Log.d(TAG, "Hello, we made an alarm for " + selTime);
-            setAlarm(mHour, mMin, c);
+            setAlarm(mHour, mMin, c, intent);
+        }
+
+        if(v == CancelButton) {
+            cancelAlarm(intent);
         }
     }
 
-    private void setAlarm(int hour, int min, Calendar cal) {
+    private void setAlarm(int hour, int min, Calendar cal, Intent intent) {
         Log.d(TAG, "Hello, we made it for " + hour + min);
         cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
-        final Intent intent = new Intent(this.context, AlarmReceiver.class);
-
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, 0);
@@ -125,8 +131,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
   }
 
-    private void cancelAlarm() {
-
+    private void cancelAlarm(Intent intent) {
+        Log.e("MainActivity", "Canceling alarm");
+        intent.putExtra("extra", "no");
+        sendBroadcast(intent);
+        alarmManager.cancel(pendingIntent);
+        Toast.makeText(this, "Alarm canceled", Toast.LENGTH_LONG).show();
     }
 
     @Override
