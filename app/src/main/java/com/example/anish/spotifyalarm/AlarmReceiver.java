@@ -22,20 +22,13 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
 
         String state = intent.getExtras().getString("extra");
-        Log.e("MyActivity", "In the receiver with " + state);
+        Intent serviceIntent = new Intent(context, RingtonePlayer.class);
 
-        Intent serviceIntent = new Intent(context,RingtonePlayer.class);
+//        serviceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         serviceIntent.putExtra("extra", state);
 
         context.startService(serviceIntent);
-
-/*        Log.d(TAG, "Made it to receiver");
-        Toast.makeText(context, "WAKE UP!", Toast.LENGTH_LONG).show();
-        MainActivity.getTextView2().setText("WAKE UP!!");
-        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        Ringtone ringtone = RingtoneManager.getRingtone(context, uri);
-        ringtone.play();
-*/
+        Log.e("MyActivity", "In the receiver with " + state);
     }
 
 }

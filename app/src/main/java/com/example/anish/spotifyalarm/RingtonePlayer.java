@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 /**
@@ -21,7 +22,8 @@ public class RingtonePlayer extends Service {
     MediaPlayer mMediaPlayer;
     private int startId;
 
-
+    @Nullable
+    @Override
     public IBinder onBind(Intent intent) {
         Log.e("MyActivity", "In the ringtone player");
         return null;
@@ -29,6 +31,7 @@ public class RingtonePlayer extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         final NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Intent int1 = new Intent (this.getApplicationContext(), MainActivity.class);
@@ -43,6 +46,14 @@ public class RingtonePlayer extends Service {
                 .build();
 
         String state = intent.getExtras().getString("extra");
+        Log.d("MainActivity", "Made it to state with " + state);
+
+        if(state == "yes") {
+            startId = 1;
+        }
+        else {
+            startId = 0;
+        }
 
         if(!this.isRunning && startId == 1) {
             Log.e("MainActivity", "We making sound");
@@ -51,7 +62,7 @@ public class RingtonePlayer extends Service {
 
             mMediaPlayer.start();
 
-            mNM.notify(0, mNotify);
+//            mNM.notify(0, mNotify);
         }
 
         else if (!this.isRunning && startId == 0){

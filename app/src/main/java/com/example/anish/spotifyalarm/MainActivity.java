@@ -8,8 +8,10 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.provider.AlarmClock;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -43,20 +45,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DateFormat pickTime;
     private AlarmManager alarmManager;
 
-    private Intent intent;
+  //  private Intent intent;
     PendingIntent pendingIntent;
-    private AlarmReceiver alarm;
 
     MainActivity curInst;
+    Context context;
 
     public String cur, selTime;
-
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.context = this;
+        final Calendar c = Calendar.getInstance();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,15 +69,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TimePicker = (Button) findViewById(R.id.time_button);
         setTime = (EditText) findViewById(R.id.set_time_box);
 
+        final Intent intent = new Intent(this.context, AlarmReceiver.class);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         TimePicker.setOnClickListener(this);
-        AlarmButton.setOnClickListener(this);
+
+        AlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selTime = setTime.getText().toString();
+                Log.d(TAG, "Hello, we made an alarm for " + selTime);
+                setAlarm(mHour, mMin, c, intent);
+            }
+        });
 
     }
 
     public void onClick(View v) {
         final Calendar c = Calendar.getInstance();
         if(v == TimePicker) {
-//            final Calendar c = Calendar.getInstance();
             iHour = c.get(Calendar.HOUR_OF_DAY);
             iMin = c.get(Calendar.MINUTE);
 
@@ -89,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         mMin = c.get(Calendar.MINUTE);
                         cur = pickTime.format(c.getTime());
                         setTime.setText(cur);
+
                     }
                 }
             };
@@ -97,31 +113,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "Hello, we trying for " + cur);
         }
 
-        if(v == AlarmButton) {
+  /*      if(v == AlarmButton) {
             selTime = setTime.getText().toString();
             Log.d(TAG, "Hello, we made an alarm for " + selTime);
             setAlarm(mHour, mMin, c);
-        }
+        } */
     }
 
-    private void setAlarm(int hour, int min, Calendar cal) {
+    private void setAlarm(int hour, int min, Calendar cal, Intent intent) {
         Log.d(TAG, "Hello, we made it for " + hour + min);
         cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, 3);
         cal.setTimeInMillis(System.currentTimeMillis());
 
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
+        cal.set(Calendar.SECOND, 0);
+        intent.putExtra("extra", "yes");
+ //       sendBroadcast(intent);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
+        Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
 
 //        cal.add(Calendar.HOUR_OF_DAY, hour);
 //        cal.add(Calendar.MINUTE, min);
-        intent = new Intent(this,  AlarmReceiver.class);
-        intent.putExtra("extra", "yes");
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
-        Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
+//        intent = new Intent(this,  AlarmReceiver.class);
 
  /*     cal = new GregorianCalendar();
         Intent iAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
