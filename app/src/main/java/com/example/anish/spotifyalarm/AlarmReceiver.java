@@ -1,6 +1,8 @@
 package com.example.anish.spotifyalarm;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
@@ -16,17 +18,16 @@ import android.widget.Toast;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+//    private final String mPackage = "com.example.anish.spotifyalarm";
+//    private final String mClass = "RingtonePlayer";
 
     @Override
     public void onReceive(final Context context, Intent intent) {
 
         String state = intent.getExtras().getString("extra");
         Intent serviceIntent = new Intent(context, RingtonePlayer.class);
-
-//        serviceIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         serviceIntent.putExtra("extra", state);
-
+//        serviceIntent.setComponent(new ComponentName(mPackage, mPackage+mClass));
         context.startService(serviceIntent);
         Log.e("MyActivity", "In the receiver with " + state);
     }

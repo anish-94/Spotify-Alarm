@@ -7,8 +7,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 /**
@@ -17,7 +19,7 @@ import android.util.Log;
 
 public class RingtonePlayer extends Service {
 
-    private boolean isRunning;
+    private boolean isRunning = false;
     private Context context;
     MediaPlayer mMediaPlayer;
     private int startId;
@@ -29,26 +31,30 @@ public class RingtonePlayer extends Service {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        final NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+
+        final NotificationManager mNM = (NotificationManager)
+                getSystemService(NOTIFICATION_SERVICE);
 
         Intent int1 = new Intent (this.getApplicationContext(), MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, int1, 0);
 
-        Notification mNotify  = new Notification.Builder(this)
+/*        Notification mNotify  = new Notification.Builder(this)
                 .setContentTitle("Alarm" + "!")
                 .setContentText("Click me!")
     //            .setSmallIcon(R.drawable.ic_action_call)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
-
+*/
         String state = intent.getExtras().getString("extra");
         Log.d("MainActivity", "Made it to state with " + state);
 
-        if(state == "yes") {
+        if(state.equals("yes")) {
             startId = 1;
         }
         else {
@@ -59,7 +65,6 @@ public class RingtonePlayer extends Service {
             Log.e("MainActivity", "We making sound");
 
             mMediaPlayer = MediaPlayer.create(this, R.raw.beatit);
-
             mMediaPlayer.start();
 
 //            mNM.notify(0, mNotify);
