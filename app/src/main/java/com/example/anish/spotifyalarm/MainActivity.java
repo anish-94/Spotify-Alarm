@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v == TimePicker) {
             iHour = c.get(Calendar.HOUR_OF_DAY);
             iMin = c.get(Calendar.MINUTE);
+            Log.e("MainActivity", "Timer before " + c.getTime());
+
 
             TimePickerDialog.OnTimeSetListener mTimeListener = new TimePickerDialog.OnTimeSetListener() {
                 @Override
@@ -119,11 +121,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setAlarm(int hour, int min, Calendar cal, Intent intent) {
         Log.d(TAG, "Hello, we made it for " + hour + min);
-        cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
+//        cal = Calendar.getInstance();
+//        cal.setTimeInMillis(System.currentTimeMillis());
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, 0);
+        Log.e("MainActivity", "Hello - timer after - " + cal.getTime());
+
         intent.putExtra("extra", "yes");
         pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

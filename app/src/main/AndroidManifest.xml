@@ -45,14 +45,4 @@
         </intent-filter>
     </activity>
 
-    <activity
-        android:name="com.spotify.sdk.android.authentication.LoginActivity"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar">
-    </activity>
-
-    <resources>
-        <string name="com_spotify_sdk_redirect_scheme">yourscheme</string>
-        <string name="com_spotify_sdk_redirect_host">yourhost</string>
-    </resources>
-
 </manifest>
