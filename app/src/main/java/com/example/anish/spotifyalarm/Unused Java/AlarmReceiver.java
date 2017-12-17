@@ -1,4 +1,4 @@
-package com.example.anish.spotifyalarm;
+/* package com.example.anish.spotifyalarm;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 /**
  * Created by anish on 12/14/17.
- */
+
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -28,4 +28,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.e("MyActivity", "In the receiver with " + state);
     }
 
-}
+}  */

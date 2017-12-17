@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             };
-            TimePickerDialog timeDialog = new TimePickerDialog(v.getContext(), R.style.TimePickerTheme, mTimeListener, mHour, mMin, false);
+            TimePickerDialog timeDialog = new TimePickerDialog
+                    (v.getContext(), R.style.TimePickerTheme, mTimeListener, mHour, mMin, false);
             timeDialog.show();
             Log.d(TAG, "Hello, we trying for " + cur);
         }
