@@ -19,6 +19,7 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
+import com.spotify.sdk.android.player.Metadata.*;
 
 public class SpotUtils extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback {
@@ -46,7 +47,7 @@ public class SpotUtils extends Activity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        requestCode = 1994;
+//        requestCode = 1994;
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {

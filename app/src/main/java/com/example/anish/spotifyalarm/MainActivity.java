@@ -20,7 +20,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-//import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -147,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra("extra", "yes");
         pendingIntent = PendingIntent.getBroadcast
                 (MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
         Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
