@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pendingIntent = PendingIntent.getBroadcast
                 (MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
         Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
   }
