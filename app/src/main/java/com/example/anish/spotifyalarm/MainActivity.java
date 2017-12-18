@@ -39,10 +39,9 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button AlarmButton, TimePicker, CancelButton;
+    private Button AlarmButton, TimePicker, CancelButton, PlayButtom;
     private EditText setTime;
     private int iHour, iMin, mHour, mMin;
-//    private Calendar cal;
     private DateFormat pickTime;
     private AlarmManager alarmManager;
 
@@ -65,9 +64,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.BLACK);
+
         AlarmButton = (Button) findViewById(R.id.alarm_button);
         TimePicker = (Button) findViewById(R.id.time_button);
         CancelButton = (Button) findViewById(R.id.cancel_button);
+        PlayButtom = (Button) findViewById(R.id.play_button);
+
         setTime = (EditText) findViewById(R.id.set_time_box);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TimePicker.setOnClickListener(this);
         AlarmButton.setOnClickListener(this);
         CancelButton.setOnClickListener(this);
+        PlayButtom.setOnClickListener(this);
 
     }
 
@@ -118,6 +121,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(v == CancelButton) {
             cancelAlarm(intent);
+        }
+
+        final Intent playInt = new Intent(this.context, SpotUtils.class);
+        if(v == PlayButtom) {
+            startActivity(playInt);
         }
     }
 

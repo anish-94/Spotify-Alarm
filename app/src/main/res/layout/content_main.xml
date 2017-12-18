@@ -52,5 +52,11 @@
             android:text="Cancel Alarm"
             android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/play_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play music" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
