@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button AlarmButton, TimePicker, CancelButton;
     private EditText setTime;
     private int iHour, iMin, mHour, mMin;
-    private Calendar cal;
+//    private Calendar cal;
     private DateFormat pickTime;
     private AlarmManager alarmManager;
 
@@ -127,12 +127,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         Log.e("MainActivity", "Hello - timer after - " + cal.getTime());
 
         intent.putExtra("extra", "yes");
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast
+                (MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis() , pendingIntent);
         Toast.makeText(this, "Alarm set", Toast.LENGTH_LONG).show();
   }
 
