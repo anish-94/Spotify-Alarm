@@ -37,6 +37,9 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
+    compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
+    compile 'com.spotify.sdk:spotify-android-auth-1.0.0@aar'
+
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

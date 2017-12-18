@@ -13,9 +13,9 @@ import okhttp3.Response;
 public class NetworkUtils {
     private static final OkHttpClient mHTTPClient = new OkHttpClient();
 
-    public static String doHTPPGet(String brewSearchURL) throws IOException{
+    public static String doHTPPGet(String spotSearchUrl) throws IOException{
         Request request = new Request.Builder()
-                .url(brewSearchURL)
+                .url(spotSearchUrl)
                 .build();
         Response response = mHTTPClient.newCall(request).execute();
 
