@@ -24,7 +24,7 @@ public class SpotUtils extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback {
 
     private static final String CLIENT_ID = "33d8356cad404b4e8b50a315623ea1dc";
-    private static final String REDIRECT_URI = "yourcustomprotocol://callback";
+    private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
     private Player mPlayer;
@@ -46,7 +46,7 @@ public class SpotUtils extends Activity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-
+        requestCode = 1994;
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
