@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -22,12 +24,13 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 import com.spotify.sdk.android.player.Metadata.*;
 
 public class SpotUtils extends Activity implements
-        SpotifyPlayer.NotificationCallback, ConnectionStateCallback {
+        SpotifyPlayer.NotificationCallback, ConnectionStateCallback, View.OnClickListener {
 
     private static final String CLIENT_ID = "33d8356cad404b4e8b50a315623ea1dc";
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
+    private Button cancelButton;
     private Player mPlayer;
 
     @Override
@@ -42,12 +45,23 @@ public class SpotUtils extends Activity implements
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+
+        cancelButton = (Button) findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(this);
+
     }
 
-    @Override
+    public void onClick(View v) {
+
+        if(v == cancelButton) {
+            mPlayer.pause(null);
+        }
+
+    }
+
+        @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-//        requestCode = 1994;
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
@@ -73,6 +87,10 @@ public class SpotUtils extends Activity implements
     protected void onDestroy() {
         Spotify.destroyPlayer(this);
         super.onDestroy();
+    }
+
+    public void stopMusic() {
+        mPlayer.pause(null);
     }
 
     @Override

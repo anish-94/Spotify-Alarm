@@ -1,7 +1,6 @@
 package com.example.anish.spotifyalarm;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.text.DateFormat;
 
 import android.app.Activity;
@@ -12,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.provider.AlarmClock;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,7 +36,7 @@ import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button AlarmButton, TimePicker, CancelButton, PlayButtom;
+    private Button AlarmButton, TimePicker, CancelButton, PlayButton;
     private EditText setTime;
     private int iHour, iMin, mHour, mMin;
     private DateFormat pickTime;
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlarmButton = (Button) findViewById(R.id.alarm_button);
         TimePicker = (Button) findViewById(R.id.time_button);
         CancelButton = (Button) findViewById(R.id.cancel_button);
-        PlayButtom = (Button) findViewById(R.id.play_button);
+        PlayButton = (Button) findViewById(R.id.play_button);
 
         setTime = (EditText) findViewById(R.id.set_time_box);
 
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TimePicker.setOnClickListener(this);
         AlarmButton.setOnClickListener(this);
         CancelButton.setOnClickListener(this);
-        PlayButtom.setOnClickListener(this);
+        PlayButton.setOnClickListener(this);
 
     }
 
@@ -123,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         final Intent playInt = new Intent(this.context, SpotUtils.class);
-        if(v == PlayButtom) {
+        if(v == PlayButton) {
             startActivity(playInt);
         }
     }
@@ -134,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
         cal.set(Calendar.SECOND, 0);
+        cal.add(Calendar.SECOND, -5);
         cal.set(Calendar.MILLISECOND, 0);
 
         if ( System.currentTimeMillis() > cal.getTimeInMillis()) {
