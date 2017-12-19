@@ -30,6 +30,7 @@ public class SpotUtils extends Activity implements
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
+    private String NOW_PLAYING = "spotify:track:2TpxZ7JUBn3uw46aR7qd6V"
     private Button cancelButton;
     private Player mPlayer;
 
@@ -117,7 +118,7 @@ public class SpotUtils extends Activity implements
     public void onLoggedIn() {
         Log.d("MainActivity", "User logged in");
 
-        mPlayer.playUri(null, "spotify:track:2TpxZ7JUBn3uw46aR7qd6V", 0, 0);
+        mPlayer.playUri(null, NOW_PLAYING, 0, 0);
     }
 
     @Override

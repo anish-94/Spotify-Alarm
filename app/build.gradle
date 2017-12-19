@@ -21,6 +21,7 @@ android {
     }
     repositories {
         mavenCentral()
+        maven { url "https://jitpack.io" }
         flatDir {
             dirs 'libs'
         }
@@ -33,6 +34,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.github.kaaes:spotify-web-api-android:0.4.1'
+
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.7.0'
@@ -40,6 +43,7 @@ dependencies {
 
     compile 'com.spotify.sdk:spotify-player-24-noconnect-2.20b@aar'
     compile 'com.spotify.sdk:spotify-android-auth-1.0.0@aar'
+    compile 'com.spotify.sdk:spotify-web-api-android-0.4.1@aar'
 
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
