@@ -6,7 +6,9 @@ package com.example.anish.spotifyalarm;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.util.SortedList;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,9 +23,19 @@ import com.spotify.sdk.android.player.Player;
 import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
-import com.spotify.sdk.android.player.Metadata.*;
+
+import java.util.List;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.ArtistsPager;
+import kaaes.spotify.webapi.android.models.Track;
+import kaaes.spotify.webapi.android.models.TracksPager;
+import kaaes.spotify.webapi.android.models.UserPrivate;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.http.GET;
+
 
 public class SpotUtils extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, View.OnClickListener {
@@ -32,9 +44,26 @@ public class SpotUtils extends Activity implements
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
-    private String NOW_PLAYING = "spotify:track:2TpxZ7JUBn3uw46aR7qd6V";
+    private String NOW_PLAYING = "spotify:track:1F5A4LpF8ylUVtPoMAvNvn";
     private Button cancelButton;
     private Player mPlayer;
+
+/*
+
+    public static final String BASE_URL = "https://api.spotify.com/v1/search";
+    public static final String API_KEY = "Authorization";
+
+    public static String buildSpotURL (String trackSearch) {
+        Log.d("SpotUtils", "Got a query for - " + trackSearch);
+
+        return Uri.parse(BASE_URL).buildUpon()
+                .appendPath("search")
+                .appendQueryParameter("q", trackSearch)
+                .appendQueryParameter("type", "track")
+                .appendQueryParameter("limit", "10")
+                .build()
+                .toString();
+    } */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +88,45 @@ public class SpotUtils extends Activity implements
         if(v == cancelButton) {
             mPlayer.pause(null);
         }
-
     }
 
-        @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+
+            SpotifyApi api = new SpotifyApi();
+            api.setAccessToken(response.getAccessToken());
+
+            SpotifyService service = api.getService();
+            service.searchTracks("Time to Pretend", new Callback<TracksPager>() {
+
+                @Override
+                public void success(TracksPager results, retrofit.client.Response response) {
+                    TracksPager trackList = results;
+                    List<Track> trackResult = trackList.tracks.items;
+
+                    for (int i = 0; i < trackResult.size(); i++) {
+                        Track curTrack = trackResult.get(i);
+                        Log.i("SpotUtils", i + " " + curTrack.toString());
+                    }
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
+
+/*            List<Track> trackResult = trackList.tracks.items;
+
+            for (int i = 0; i < trackResult.size(); i++) {
+                Track curTrack = trackResult.get(i);
+                Log.i("SpotUtils", i + " " + curTrack.toString());
+            } */
+
+            Log.d("SpotUtils", "Response here is: " + response.getAccessToken());
+
             if (response.getType() == AuthenticationResponse.Type.TOKEN) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {

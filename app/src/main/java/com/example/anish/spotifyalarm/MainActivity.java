@@ -16,6 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,6 +35,10 @@ import com.example.anish.spotifyalarm.SpotUtils;
 
 import org.w3c.dom.Text;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Album;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button AlarmButton, TimePicker, CancelButton, PlayButton;
@@ -43,12 +48,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AlarmManager alarmManager;
 
     PendingIntent pendingIntent;
-
     MainActivity curInst;
     Context context;
 
     public String cur, selTime;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    SpotifyApi api = new SpotifyApi();
+    SpotifyService spotify = api.getService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
