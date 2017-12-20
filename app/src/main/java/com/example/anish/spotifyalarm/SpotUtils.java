@@ -44,7 +44,7 @@ public class SpotUtils extends Activity implements
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
-    private String NOW_PLAYING = "spotify:track:1F5A4LpF8ylUVtPoMAvNvn";
+    private String NOW_PLAYING = "hspotify:track:4iG2gAwKXsOcijVaVXzRPW";
     private Button cancelButton;
     private Player mPlayer;
     List<Track> trackResult;
@@ -110,7 +110,7 @@ public class SpotUtils extends Activity implements
 
                     for (int i = 0; i < trackResult.size(); i++) {
                         Track curTrack = trackResult.get(i);
-                        Log.i("SpotUtils", i + " " + curTrack);
+                        Log.i("SpotUtils", i + " " + curTrack.uri);
                     }
                 }
 
@@ -118,8 +118,6 @@ public class SpotUtils extends Activity implements
                 public void failure(RetrofitError error) {
                 }
             });
-
-
 
             Log.d("SpotUtils", "Response here is: " + response.getAccessToken());
 
