@@ -23,6 +23,8 @@ import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 import com.spotify.sdk.android.player.Metadata.*;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
+
 public class SpotUtils extends Activity implements
         SpotifyPlayer.NotificationCallback, ConnectionStateCallback, View.OnClickListener {
 
@@ -30,7 +32,7 @@ public class SpotUtils extends Activity implements
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
-    private String NOW_PLAYING = "spotify:track:2TpxZ7JUBn3uw46aR7qd6V"
+    private String NOW_PLAYING = "spotify:track:2TpxZ7JUBn3uw46aR7qd6V";
     private Button cancelButton;
     private Player mPlayer;
 
