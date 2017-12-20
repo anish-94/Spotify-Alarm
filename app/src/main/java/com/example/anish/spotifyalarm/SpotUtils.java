@@ -47,6 +47,7 @@ public class SpotUtils extends Activity implements
     private String NOW_PLAYING = "spotify:track:1F5A4LpF8ylUVtPoMAvNvn";
     private Button cancelButton;
     private Player mPlayer;
+    List<Track> trackResult;
 
 /*
 
@@ -105,11 +106,11 @@ public class SpotUtils extends Activity implements
                 @Override
                 public void success(TracksPager results, retrofit.client.Response response) {
                     TracksPager trackList = results;
-                    List<Track> trackResult = trackList.tracks.items;
+                    trackResult = trackList.tracks.items;
 
                     for (int i = 0; i < trackResult.size(); i++) {
                         Track curTrack = trackResult.get(i);
-                        Log.i("SpotUtils", i + " " + curTrack.toString());
+                        Log.i("SpotUtils", i + " " + curTrack);
                     }
                 }
 
@@ -118,12 +119,7 @@ public class SpotUtils extends Activity implements
                 }
             });
 
-/*            List<Track> trackResult = trackList.tracks.items;
 
-            for (int i = 0; i < trackResult.size(); i++) {
-                Track curTrack = trackResult.get(i);
-                Log.i("SpotUtils", i + " " + curTrack.toString());
-            } */
 
             Log.d("SpotUtils", "Response here is: " + response.getAccessToken());
 
