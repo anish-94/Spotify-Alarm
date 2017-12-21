@@ -34,6 +34,7 @@ import kaaes.spotify.webapi.android.models.TracksPager;
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.http.GET;
 
 
@@ -44,27 +45,11 @@ public class SpotUtils extends Activity implements
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
     private static final int REQUEST_CODE = 1994;
 
-    private String NOW_PLAYING = "hspotify:track:4iG2gAwKXsOcijVaVXzRPW";
+    private String NOW_PLAYING = "spotify:track:4iG2gAwKXsOcijVaVXzRPW";
     private Button cancelButton;
     private Player mPlayer;
     List<Track> trackResult;
-
-/*
-
-    public static final String BASE_URL = "https://api.spotify.com/v1/search";
-    public static final String API_KEY = "Authorization";
-
-    public static String buildSpotURL (String trackSearch) {
-        Log.d("SpotUtils", "Got a query for - " + trackSearch);
-
-        return Uri.parse(BASE_URL).buildUpon()
-                .appendPath("search")
-                .appendQueryParameter("q", trackSearch)
-                .appendQueryParameter("type", "track")
-                .appendQueryParameter("limit", "10")
-                .build()
-                .toString();
-    } */
+    public String accToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,37 +76,59 @@ public class SpotUtils extends Activity implements
         }
     }
 
+    public List<Track> doSpotSearch(String accToken) {
+        SpotifyApi api = new SpotifyApi();
+        api.setAccessToken(accToken);
+
+        SpotifyService service = api.getService();
+        service.searchTracks("Time to Pretend", new Callback<TracksPager>() {
+
+            @Override
+            public void success(TracksPager results, retrofit.client.Response response) {
+                TracksPager trackList = results;
+                trackResult = trackList.tracks.items;
+
+                for (int i = 0; i < trackResult.size(); i++) {
+                    Track curTrack = trackResult.get(i);
+                    Log.i("SpotUtils", i + " " + curTrack.uri);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+
+        return trackResult;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-
-            SpotifyApi api = new SpotifyApi();
-            api.setAccessToken(response.getAccessToken());
-
-            SpotifyService service = api.getService();
-            service.searchTracks("Time to Pretend", new Callback<TracksPager>() {
-
-                @Override
-                public void success(TracksPager results, retrofit.client.Response response) {
-                    TracksPager trackList = results;
-                    trackResult = trackList.tracks.items;
-
-                    for (int i = 0; i < trackResult.size(); i++) {
-                        Track curTrack = trackResult.get(i);
-                        Log.i("SpotUtils", i + " " + curTrack.uri);
-                    }
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                }
-            });
+            final AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+            accToken = response.getAccessToken();
+            doSpotSearch(accToken);
 
             Log.d("SpotUtils", "Response here is: " + response.getAccessToken());
 
-            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+            if (response.getType() == AuthenticationResponse.Type.TOKEN && intent.getExtras().equals("search")) {
+                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
+                    @Override
+                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
+                        doSpotSearch(response.getAccessToken());
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        Log.e("MainActivity", "Could not initialize player: " + throwable.getMessage());
+                    }
+                });
+            }
+
+            else if (response.getType() == AuthenticationResponse.Type.TOKEN && intent.getExtras().equals("play")) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override

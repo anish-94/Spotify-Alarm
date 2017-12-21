@@ -58,5 +58,22 @@
             android:layout_height="wrap_content"
             android:text="Play music" />
 
+        <EditText
+            android:id="@+id/set_song_box"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="Enter song.."
+            android:textColor="#fff"
+            android:textColorHint="#fff"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/song_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search song"/>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

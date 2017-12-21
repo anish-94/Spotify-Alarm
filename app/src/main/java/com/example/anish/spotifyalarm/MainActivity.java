@@ -32,20 +32,26 @@ import android.widget.Toast;
 
 import com.example.anish.spotifyalarm.AlarmReceiver;
 import com.example.anish.spotifyalarm.SpotUtils;
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import org.w3c.dom.Text;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Album;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button AlarmButton, TimePicker, CancelButton, PlayButton;
+    private Button AlarmButton, TimePicker, CancelButton, PlayButton, SearchButton;
     private EditText setTime;
     private int iHour, iMin, mHour, mMin;
     private DateFormat pickTime;
     private AlarmManager alarmManager;
+
+    private static final String CLIENT_ID = "33d8356cad404b4e8b50a315623ea1dc";
+    private static final String REDIRECT_URI = "myspotifyalarm://callback";
+    private static final int REQUEST_CODE = 1994;
 
     PendingIntent pendingIntent;
     MainActivity curInst;
@@ -54,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public String cur, selTime;
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    SpotifyApi api = new SpotifyApi();
-    SpotifyService spotify = api.getService();
+    SpotUtils mSpotUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TimePicker = (Button) findViewById(R.id.time_button);
         CancelButton = (Button) findViewById(R.id.cancel_button);
         PlayButton = (Button) findViewById(R.id.play_button);
+        SearchButton = (Button) findViewById(R.id.song_search);
 
         setTime = (EditText) findViewById(R.id.set_time_box);
 
@@ -82,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlarmButton.setOnClickListener(this);
         CancelButton.setOnClickListener(this);
         PlayButton.setOnClickListener(this);
+        SearchButton.setOnClickListener(this);
 
     }
 
@@ -116,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         final Intent intent = new Intent(this.context, AlarmReceiver.class);
-
         if(v == AlarmButton) {
             selTime = setTime.getText().toString();
             Log.d(TAG, "Hello, we made an alarm for " + selTime);
@@ -129,9 +135,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         final Intent playInt = new Intent(this.context, SpotUtils.class);
         if(v == PlayButton) {
+            playInt.putExtra("extra", "play");
             startActivity(playInt);
         }
+
+        final Intent searchInt = new Intent(this.context, SpotUtils.class);
+        if(v == SearchButton) {
+            searchInt.putExtra("extra", "search");
+            startActivity(searchInt);
+        }
     }
+
 
     private void setAlarm(int hour, int min, Calendar cal, Intent intent) {
         Log.d(TAG, "Hello, we made it for " + hour + min);
