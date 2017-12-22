@@ -38,8 +38,13 @@ import kaaes.spotify.webapi.android.models.Track;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
+    public final static String STATUS = "com.example.anish.spotifyalarm.STATUS";
+    public final static String QUERY = "com.example.anish.spotifyalarm.QUERY";
+    public final static String TRACK = "com.example.anish.spotifyalarm.TRACK";
+
+
     private Button AlarmButton, TimePicker, CancelButton, PlayButton, SearchButton;
-    private EditText setTime;
+    private EditText setTime, setSong;
     private int iHour, iMin, mHour, mMin;
     private DateFormat pickTime;
     private AlarmManager alarmManager;
@@ -50,8 +55,6 @@ public class MainActivity extends AppCompatActivity
 
     public String cur, selTime;
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    SpotUtils mSpotUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         SearchButton = (Button) findViewById(R.id.song_search);
 
         setTime = (EditText) findViewById(R.id.set_time_box);
+        setSong = (EditText) findViewById(R.id.set_song_box);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -85,6 +89,9 @@ public class MainActivity extends AppCompatActivity
 
     public void onClick(View v) {
         final Calendar c = Calendar.getInstance();
+
+        Bundle extras = new Bundle();
+
         if(v == TimePicker) {
             iHour = c.get(Calendar.HOUR_OF_DAY);
             iMin = c.get(Calendar.MINUTE);
@@ -126,19 +133,31 @@ public class MainActivity extends AppCompatActivity
 
         final Intent playInt = new Intent(this.context, SpotUtils.class);
         if(v == PlayButton) {
-            playInt.putExtra("extra", "play");
+            extras.putString("status", "play");
+            playInt.putExtras(extras);
             startActivity(playInt);
         }
 
-        final Intent searchInt = new Intent(this.context, SpotUtils.class);
+        Intent searchInt = new Intent(this.context, SpotUtils.class);
         if(v == SearchButton) {
-            searchInt.putExtra("extra", "search");
+            extras.putString("status", "search");
+            extras.putString("query", setSong.getText().toString());
+            searchInt.putExtras(extras);
+
+            Log.d(TAG, extras.getString("status"));
+            Log.d(TAG, extras.getString("query"));
+
+
             startActivity(searchInt);
         }
     }
 
     private void setAlarm(int hour, int min, Calendar cal, Intent intent) {
         Log.d(TAG, "Hello, we made it for " + hour + min);
+
+        Bundle extras = new Bundle();
+        extras.putString("status", "play");
+        intent.putExtras(extras);
 
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, min);
@@ -153,7 +172,6 @@ public class MainActivity extends AppCompatActivity
 
         Log.d("MainActivity", "Hello - timer after - " + cal.getTime());
 
-        intent.putExtra("extra", "yes");
         pendingIntent = PendingIntent.getBroadcast
                 (MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

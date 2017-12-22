@@ -53,7 +53,7 @@ public class SpotUtils extends Activity implements
     private Button cancelButton;
     private Player mPlayer;
     private ArrayList<Track> trackResult;
-    private String accToken;
+    private String accToken, searchQuery;
 
     private ResultAdapter mResultAdapter;
     private RecyclerView mResultRV;
@@ -84,12 +84,12 @@ public class SpotUtils extends Activity implements
         }
     }
 
-    public List<Track> doSpotSearch(String accToken) {
+    public List<Track> doSpotSearch(String searchQuery) {
         SpotifyApi api = new SpotifyApi();
         api.setAccessToken(accToken);
 
         SpotifyService service = api.getService();
-        service.searchTracks("Time to Pretend", new Callback<TracksPager>() {
+        service.searchTracks(searchQuery, new Callback<TracksPager>() {
 
             @Override
             public void success(TracksPager results, retrofit.client.Response response) {
@@ -113,7 +113,7 @@ public class SpotUtils extends Activity implements
 
     @Override
     public void onSearchResultClick(Track searchResult) {
- //       Intent intent = new Intent(this, SearchResultDetailActivity.class);
+ //       Intent intent = new Intent(this, SpotUtils.class);
  //       intent.putExtra(BreweryUtils.BrewItem.EXTRA_SEARCH_RESULT, searchResult);
  //       startActivity(intent);
     }
@@ -124,16 +124,21 @@ public class SpotUtils extends Activity implements
         if (requestCode == REQUEST_CODE) {
             final AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
             accToken = response.getAccessToken();
-            doSpotSearch(accToken);
 
             Log.d("SpotUtils", "Response here is: " + response.getAccessToken());
 
-            if (response.getType() == AuthenticationResponse.Type.TOKEN && intent.getExtras().equals("search")) {
+            intent = getIntent();
+            Bundle extras = intent.getExtras();
+            String status = extras.getString("status");
+            Log.d("SpotUtils", "We have status = " + status);
+
+            if (response.getType() == AuthenticationResponse.Type.TOKEN && status.equals("search")) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+                searchQuery = extras.getString("query");
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
-                        doSpotSearch(response.getAccessToken());
+                        doSpotSearch(searchQuery);
                     }
 
                     @Override
@@ -143,7 +148,7 @@ public class SpotUtils extends Activity implements
                 });
             }
 
-            else if (response.getType() == AuthenticationResponse.Type.TOKEN && intent.getExtras().equals("play")) {
+            else if (response.getType() == AuthenticationResponse.Type.TOKEN && status.equals("play")) {
                 Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
                 Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
                     @Override

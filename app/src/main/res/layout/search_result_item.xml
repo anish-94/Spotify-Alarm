@@ -10,7 +10,7 @@
         android:padding="16dp"
         android:textSize="22dp" />
 
-    <android.support.v7.widget.RecyclerView
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="8dp"

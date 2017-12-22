@@ -22,6 +22,10 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.SearchResu
     private ArrayList<Track> mSearchResultList;
     private OnSearchResultClickListener mSearchResultClickListener;
 
+    public ResultAdapter(OnSearchResultClickListener clickListener){
+        mSearchResultClickListener = clickListener;
+    }
+
     @Override
     public SearchResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
