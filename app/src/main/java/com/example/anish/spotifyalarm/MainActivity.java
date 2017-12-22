@@ -29,29 +29,20 @@ import android.widget.EditText;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.example.anish.spotifyalarm.AlarmReceiver;
-import com.example.anish.spotifyalarm.SpotUtils;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-
 import org.w3c.dom.Text;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Track;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener {
 
     private Button AlarmButton, TimePicker, CancelButton, PlayButton, SearchButton;
     private EditText setTime;
     private int iHour, iMin, mHour, mMin;
     private DateFormat pickTime;
     private AlarmManager alarmManager;
-
-    private static final String CLIENT_ID = "33d8356cad404b4e8b50a315623ea1dc";
-    private static final String REDIRECT_URI = "myspotifyalarm://callback";
-    private static final int REQUEST_CODE = 1994;
 
     PendingIntent pendingIntent;
     MainActivity curInst;
@@ -145,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(searchInt);
         }
     }
-
 
     private void setAlarm(int hour, int min, Calendar cal, Intent intent) {
         Log.d(TAG, "Hello, we made it for " + hour + min);

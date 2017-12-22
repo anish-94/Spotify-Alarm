@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.util.SortedList;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import com.spotify.sdk.android.player.PlayerEvent;
 import com.spotify.sdk.android.player.Spotify;
 import com.spotify.sdk.android.player.SpotifyPlayer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -39,7 +41,9 @@ import retrofit.http.GET;
 
 
 public class SpotUtils extends Activity implements
-        SpotifyPlayer.NotificationCallback, ConnectionStateCallback, View.OnClickListener {
+        SpotifyPlayer.NotificationCallback,
+        ConnectionStateCallback, View.OnClickListener,
+        ResultAdapter.OnSearchResultClickListener {
 
     private static final String CLIENT_ID = "33d8356cad404b4e8b50a315623ea1dc";
     private static final String REDIRECT_URI = "myspotifyalarm://callback";
@@ -48,8 +52,12 @@ public class SpotUtils extends Activity implements
     private String NOW_PLAYING = "spotify:track:4iG2gAwKXsOcijVaVXzRPW";
     private Button cancelButton;
     private Player mPlayer;
-    List<Track> trackResult;
-    public String accToken;
+    private ArrayList<Track> trackResult;
+    private String accToken;
+
+    private ResultAdapter mResultAdapter;
+    private RecyclerView mResultRV;
+    private ArrayList<Track> mSearchResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +94,7 @@ public class SpotUtils extends Activity implements
             @Override
             public void success(TracksPager results, retrofit.client.Response response) {
                 TracksPager trackList = results;
-                trackResult = trackList.tracks.items;
+                trackResult = (ArrayList<Track>) trackList.tracks.items;
 
                 for (int i = 0; i < trackResult.size(); i++) {
                     Track curTrack = trackResult.get(i);
@@ -101,6 +109,13 @@ public class SpotUtils extends Activity implements
         });
 
         return trackResult;
+    }
+
+    @Override
+    public void onSearchResultClick(Track searchResult) {
+ //       Intent intent = new Intent(this, SearchResultDetailActivity.class);
+ //       intent.putExtra(BreweryUtils.BrewItem.EXTRA_SEARCH_RESULT, searchResult);
+ //       startActivity(intent);
     }
 
     @Override
