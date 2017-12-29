@@ -14,6 +14,9 @@ import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
 
 /**
+ *  Adapter file to gather Spotify data using the API Wrapper
+ *  Get the list of songs given a query and store it in a list
+ *
  * Created by anish on 12/21/17.
  */
 
@@ -69,7 +72,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.SearchResu
         }
 
         public void bind(Track track) {
-            mSearchResultTV.setText(track.name + " - " + track.album);
+            mSearchResultTV.setText(track.name + " - " + track.album);                // Store the track + album names in the specified list
         }
 
         public void onClick(View v){

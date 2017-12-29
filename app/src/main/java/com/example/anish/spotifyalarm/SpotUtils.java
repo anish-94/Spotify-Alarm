@@ -45,11 +45,11 @@ public class SpotUtils extends Activity implements
         ConnectionStateCallback, View.OnClickListener,
         ResultAdapter.OnSearchResultClickListener {
 
-    private static final String CLIENT_ID = "33d8356cad404b4e8b50a315623ea1dc";
-    private static final String REDIRECT_URI = "myspotifyalarm://callback";
+    private static final String CLIENT_ID = "";                                     // Removed client ID
+    private static final String REDIRECT_URI = "myspotifyalarm://callback";         // Default URI
     private static final int REQUEST_CODE = 1994;
 
-    private String NOW_PLAYING = "spotify:track:4iG2gAwKXsOcijVaVXzRPW";
+    private String NOW_PLAYING = "spotify:track:4iG2gAwKXsOcijVaVXzRPW";           // Default track ID when no track is selected
     private Button cancelButton;
     private Player mPlayer;
     private ArrayList<Track> trackResult;
@@ -80,7 +80,7 @@ public class SpotUtils extends Activity implements
     public void onClick(View v) {
 
         if(v == cancelButton) {
-            mPlayer.pause(null);
+            mPlayer.pause(null);                            // Cancel alarm immediately stops music
         }
     }
 
@@ -98,7 +98,7 @@ public class SpotUtils extends Activity implements
 
                 for (int i = 0; i < trackResult.size(); i++) {
                     Track curTrack = trackResult.get(i);
-                    Log.i("SpotUtils", i + " " + curTrack.uri);
+                    Log.i("SpotUtils", i + " " + curTrack.uri);       // Get URI to play track
                 }
             }
 
